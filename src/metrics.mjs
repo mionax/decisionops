@@ -11,6 +11,12 @@ function brier(record) {
   }, 0);
 }
 
+function isCorrect(record) {
+  return record.type === "score"
+    ? Math.round(record.score) === record.label
+    : record.predicted === record.label;
+}
+
 function calibration(records, binCount = DEFAULT_BINS) {
   const bins = Array.from({ length: binCount }, (_, index) => ({
     lower: index / binCount,
@@ -24,7 +30,7 @@ function calibration(records, binCount = DEFAULT_BINS) {
     const bin = bins[index];
     bin.count += 1;
     bin.confidenceSum += record.confidence;
-    if (record.predicted === record.label) bin.correct += 1;
+    if (isCorrect(record)) bin.correct += 1;
   }
   const total = records.length;
   const ece = bins.reduce((sum, bin) => {
@@ -64,10 +70,11 @@ export function evaluate(records, { threshold = 0.7, bins = DEFAULT_BINS } = {})
   if (!Number.isFinite(threshold) || threshold < 0 || threshold > 1) throw new Error("Threshold must be between 0 and 1.");
 
   const accepted = records.filter((record) => record.confidence >= threshold);
-  const correctCount = records.filter((record) => record.predicted === record.label).length;
-  const selectiveCorrect = accepted.filter((record) => record.predicted === record.label).length;
+  const correctCount = records.filter(isCorrect).length;
+  const selectiveCorrect = accepted.filter(isCorrect).length;
   const choiceRecords = records.filter((record) => record.type === "choice");
   const binaryRecords = records.filter((record) => record.type === "noul");
+  const scoreRecords = records.filter((record) => record.type === "score");
   const calibrationResult = calibration(records, bins);
   const confusion = Object.create(null);
   for (const record of choiceRecords) {
@@ -79,14 +86,14 @@ export function evaluate(records, { threshold = 0.7, bins = DEFAULT_BINS } = {})
 
   const thresholds = Array.from({ length: 10 }, (_, index) => 0.5 + index * 0.05).map((value) => {
     const included = records.filter((record) => record.confidence >= value);
-    const misses = included.filter((record) => record.predicted !== record.label).length;
+    const misses = included.filter((record) => !isCorrect(record)).length;
     return { threshold: Number(value.toFixed(2)), accepted: included.length, coverage: included.length / records.length, selectiveRisk: divide(misses, included.length) };
   });
 
   return {
     version: 1,
     generatedAt: new Date().toISOString(),
-    dataset: { records: records.length, choiceRecords: choiceRecords.length, noulRecords: binaryRecords.length },
+    dataset: { records: records.length, choiceRecords: choiceRecords.length, scoreRecords: scoreRecords.length, noulRecords: binaryRecords.length },
     operatingPoint: {
       threshold,
       accepted: accepted.length,
@@ -101,11 +108,14 @@ export function evaluate(records, { threshold = 0.7, bins = DEFAULT_BINS } = {})
       ...(binaryRecords.length ? {
         noulBrierScore: binaryRecords.reduce((sum, record) => sum + brier(record), 0) / binaryRecords.length,
       } : {}),
+      ...(scoreRecords.length ? {
+        scoreMeanAbsoluteError: scoreRecords.reduce((sum, record) => sum + Math.abs(record.score - record.label), 0) / scoreRecords.length,
+      } : {}),
       ...(choiceRecords.length ? { classes: classMetrics(choiceRecords), confusion } : {}),
     },
     calibration: calibrationResult.bins,
     thresholdSweep: thresholds,
-    examples: records.map(({ line: _line, ...record }) => ({ ...record, correct: record.predicted === record.label, accepted: record.confidence >= threshold })),
+    examples: records.map(({ line: _line, ...record }) => ({ ...record, correct: isCorrect(record), accepted: record.confidence >= threshold })),
   };
 }
 

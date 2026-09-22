@@ -32,3 +32,7 @@
 {"id":"ticket-032","type":"noul","label":false,"result":{"noul":0.16}}
 {"id":"ticket-033","type":"noul","label":true,"result":{"noul":0.71}}
 {"id":"ticket-034","type":"noul","label":false,"result":{"noul":0.78}}
+{"id":"urgency-001","type":"score","label":2,"result":{"type":"score","score":1.72,"confidence":0.74,"legend":{"0":"Routine; no time pressure","1":"Time-sensitive; response soon is helpful","2":"Urgent; immediate action is needed"},"probabilities":{"0":0.02,"1":0.24,"2":0.74}}}
+{"id":"urgency-002","type":"score","label":1,"result":{"type":"score","score":1.40,"confidence":0.36,"legend":{"0":"Routine; no time pressure","1":"Time-sensitive; response soon is helpful","2":"Urgent; immediate action is needed"},"probabilities":{"0":0.03,"1":0.54,"2":0.43}}}
+{"id":"urgency-003","type":"score","label":0,"result":{"type":"score","score":0.28,"confidence":0.71,"legend":{"0":"Routine; no time pressure","1":"Time-sensitive; response soon is helpful","2":"Urgent; immediate action is needed"},"probabilities":{"0":0.75,"1":0.22,"2":0.03}}}
+{"id":"urgency-004","type":"score","label":2,"result":{"type":"score","score":1.44,"confidence":0.32,"legend":{"0":"Routine; no time pressure","1":"Time-sensitive; response soon is helpful","2":"Urgent; immediate action is needed"},"probabilities":{"0":0.08,"1":0.40,"2":0.52}}}

@@ -1,7 +1,7 @@
 {
   "name": "decisionops",
-  "version": "0.1.0",
-  "description": "Measure, replay, and calibrate typed decisions for AI systems.",
+  "version": "0.2.0",
+  "description": "Independent Jev-compatible workbench for evaluating Choice, Score, and Noul decisions.",
   "type": "module",
   "repository": {
     "type": "git",
@@ -37,6 +37,10 @@
     "calibration",
     "decision-model",
     "jev",
+    "jev-ai",
+    "jev-model",
+    "system-one",
+    "typesafe",
     "llm",
     "benchmark",
     "confidence"

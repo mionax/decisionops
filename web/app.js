@@ -2,7 +2,7 @@ import { evaluate, formatNumber, thresholdSummary } from "/src/metrics.mjs";
 import { parseJsonl } from "/src/dataset.mjs";
 
 const $ = (selector) => document.querySelector(selector);
-const state = { records: [], report: null, threshold: 0.7, filter: "all", query: "", opened: null, name: "Support triage · sample", synthetic: true, toastTimer: null };
+const state = { records: [], report: null, threshold: 0.7, filter: "all", query: "", opened: null, name: "Jev support triage · sample", synthetic: true, toastTimer: null };
 
 function escapeHtml(value) {
   return String(value).replace(/[&<>"']/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[character]);
@@ -28,7 +28,11 @@ function confidenceColor(value) {
 function renderMetrics() {
   const report = state.report;
   const summary = thresholdSummary(report, state.threshold);
+  const hasScores = report.dataset.scoreRecords > 0;
   $("#accuracy").textContent = formatNumber(report.metrics.accuracy);
+  $("#score-mae-card").hidden = !hasScores;
+  $(".metric-grid").classList.toggle("has-score", hasScores);
+  if (hasScores) $("#score-mae").textContent = report.metrics.scoreMeanAbsoluteError.toFixed(2);
   $("#brier").textContent = report.metrics.brierScore.toFixed(3);
   $("#ece").textContent = report.metrics.ece.toFixed(3);
   $("#coverage").textContent = formatNumber(summary.coverage);
@@ -37,11 +41,10 @@ function renderMetrics() {
   $("#gate-coverage").textContent = formatNumber(summary.coverage);
   $("#gate-accepted").textContent = `${summary.accepted} of ${state.records.length} decisions accepted`;
   $("#gate-risk").textContent = formatNumber(summary.selectiveRisk);
-  $("#record-count-side").textContent = state.records.length;
   $("#record-total").textContent = state.records.length;
   $("#dataset-name").textContent = state.name;
   const typeCounts = report.dataset;
-  const typeLabel = [typeCounts.choiceRecords ? "Choice" : "", typeCounts.noulRecords ? "Noul" : ""].filter(Boolean).join(" + ");
+  const typeLabel = [typeCounts.choiceRecords ? "Choice" : "", typeCounts.scoreRecords ? "Score" : "", typeCounts.noulRecords ? "Noul" : ""].filter(Boolean).join(" + ");
   $("#dataset-subtitle").textContent = `${typeLabel} · ${state.records.length} records`;
   $(".demo-tag").textContent = state.synthetic ? "SYNTHETIC" : "LOCAL FILE";
   $(".demo-tag").classList.toggle("local-file", !state.synthetic);
@@ -91,8 +94,15 @@ function renderRows() {
   body.innerHTML = rows.slice(0, 250).map((record) => {
     const isOpen = state.opened === record.id;
     const status = !record.correct ? ["error", "Error"] : !record.accepted ? ["review", "Review"] : ["pass", "Accepted"];
-    const distribution = Object.entries(record.probabilities).sort((a, b) => b[1] - a[1]).map(([option, probability]) => `<span class="probability-item"><span>${escapeHtml(label(option))}</span><strong>${formatNumber(probability, 0)}</strong><i><b style="width:${Math.round(probability * 100)}%"></b></i></span>`).join("");
-    return `<tr class="data-row" data-id="${escapeHtml(record.id)}"><td class="record-id">${escapeHtml(record.id)}</td><td><span class="type-chip">${record.type.toUpperCase()}</span></td><td class="label-cell">${escapeHtml(label(record.label))}</td><td><span class="decision-cell"><i class="decision-dot ${record.correct ? "" : "wrong"}"></i>${escapeHtml(label(record.predicted))}</span></td><td><span class="confidence-cell"><i class="mini-track"><i class="mini-fill ${confidenceColor(record.confidence)}" style="width:${Math.round(record.confidence * 100)}%"></i></i><span class="confidence-text">${formatNumber(record.confidence, 0)}</span></span></td><td><span class="status-chip ${status[0]}">${status[1]}</span></td><td><button class="row-expand" type="button" aria-label="${isOpen ? "Close" : "Inspect"} probability distribution">${isOpen ? "−" : "+"}</button></td></tr>${isOpen ? `<tr class="detail-row"><td colspan="7"><div class="probability-list">${distribution}</div></td></tr>` : ""}`;
+    const distribution = Object.entries(record.probabilities).sort((a, b) => b[1] - a[1]).map(([option, probability]) => {
+      const optionLabel = record.type === "score" ? record.legend?.[option] ?? `Level ${option}` : label(option);
+      return `<span class="probability-item"><span>${escapeHtml(optionLabel)}</span><strong>${formatNumber(probability, 0)}</strong><i><b style="width:${Math.round(probability * 100)}%"></b></i></span>`;
+    }).join("");
+    const decision = record.type === "score" ? `${record.score.toFixed(2)} <small>level ${record.predictedLevel}</small>` : escapeHtml(label(record.predicted));
+    const confidenceTitle = record.type === "noul"
+      ? "Derived certainty: max(P(yes), P(no)). Jev returns the yes probability, not a separate confidence value."
+      : record.confidenceSource === "model" ? "Model-reported confidence." : "Derived from the output probabilities; not model-reported.";
+    return `<tr class="data-row" data-id="${escapeHtml(record.id)}"><td class="record-id">${escapeHtml(record.id)}</td><td><span class="type-chip">${record.type.toUpperCase()}</span></td><td class="label-cell">${escapeHtml(label(record.label))}</td><td><span class="decision-cell"><i class="decision-dot ${record.correct ? "" : "wrong"}"></i>${decision}</span></td><td><span class="confidence-cell" title="${confidenceTitle}"><i class="mini-track"><i class="mini-fill ${confidenceColor(record.confidence)}" style="width:${Math.round(record.confidence * 100)}%"></i></i><span class="confidence-text">${formatNumber(record.confidence, 0)}</span></span></td><td><span class="status-chip ${status[0]}">${status[1]}</span></td><td><button class="row-expand" type="button" aria-label="${isOpen ? "Close" : "Inspect"} probability distribution">${isOpen ? "−" : "+"}</button></td></tr>${isOpen ? `<tr class="detail-row"><td colspan="7"><div class="probability-list">${distribution}</div></td></tr>` : ""}`;
   }).join("");
   if (rows.length > 250) $("#table-status").textContent = `Showing first 250 of ${rows.length} matching records`;
 }
@@ -113,7 +123,7 @@ async function start() {
   try {
     const response = await fetch("/examples/support-triage.jsonl");
     if (!response.ok) throw new Error("Sample dataset could not be loaded.");
-    loadText(await response.text(), "Support triage · sample", true);
+    loadText(await response.text(), "Jev support triage · sample", true);
   } catch (error) {
     $("#records-body").innerHTML = `<tr><td colspan="7" class="empty-state">${escapeHtml(error.message)}</td></tr>`;
   }
@@ -164,8 +174,6 @@ async function start() {
     else { input.value = ""; state.query = ""; renderRows(); }
   });
   $("#search-input").addEventListener("input", (event) => { state.query = event.target.value.trim(); renderRows(); });
-  $("#nav-datasets").addEventListener("click", () => $("#records-panel").scrollIntoView({ behavior: "smooth" }));
-  $("#nav-reports").addEventListener("click", () => $("#export-button").click());
   const drop = $(".dataset-control");
   drop.addEventListener("dragover", (event) => { event.preventDefault(); drop.classList.add("dragging"); });
   drop.addEventListener("dragleave", () => drop.classList.remove("dragging"));

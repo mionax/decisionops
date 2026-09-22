@@ -3,87 +3,154 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#f1eee6" />
-    <meta name="description" content="A local-first workbench to evaluate and calibrate AI decisions." />
-    <title>DecisionOps — Decision quality workbench</title>
+    <meta name="theme-color" content="#0b0e0d" />
+    <meta name="description" content="What is Jev AI? Explore TypeSafe's System One decision model, its Choice, Score and Noul primitives, and evaluate Jev-compatible outputs locally with DecisionOps." />
+    <meta name="keywords" content="Jev AI, Jev model, TypeSafe, System One model, Choice Score Noul, Jev evaluation, decision model, confidence calibration" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Jev thinks. Your code acts. — DecisionOps" />
+    <meta property="og:description" content="Meet Jev, the System One model built for typed decisions. Then test what those decisions mean for your product." />
+    <title>Jev AI & System One Decisions, Evaluated — DecisionOps</title>
     <link rel="stylesheet" href="/web/styles.css" />
   </head>
   <body>
-    <div class="app-shell">
-      <aside class="sidebar">
-        <a class="brand" href="#" aria-label="DecisionOps home">
-          <span class="brand-mark"><i></i><i></i><i></i></span>
-          <span>decision<span class="brand-light">ops</span></span>
-        </a>
-        <div class="workspace-label">WORKSPACE</div>
-        <button class="nav-item active" type="button"><span class="nav-icon grid-icon">▦</span>Decision lab</button>
-        <button class="nav-item" id="nav-datasets" type="button"><span class="nav-icon">◫</span>Datasets<span class="nav-count" id="record-count-side">—</span></button>
-        <button class="nav-item" id="nav-reports" type="button"><span class="nav-icon">◷</span>Export report</button>
-        <div class="sidebar-rule"></div>
-        <div class="workspace-label">LEARN</div>
-        <a class="nav-item nav-link" href="https://github.com/mionax/decisionops#readme" target="_blank" rel="noreferrer"><span class="nav-icon">↗</span>Quick start</a>
-        <a class="nav-item nav-link" href="https://github.com/mionax/decisionops/issues" target="_blank" rel="noreferrer"><span class="nav-icon">⌁</span>Feedback</a>
-        <div class="sidebar-bottom">
-          <div class="local-card"><span class="local-dot"></span><div><strong>Local session</strong><small>Your data stays here</small></div><span class="lock">⌑</span></div>
-          <a class="github-link" href="https://github.com/mionax/decisionops" target="_blank" rel="noreferrer"><span>GitHub</span><span>↗</span></a>
-          <div class="version">DECISIONOPS <span>v0.1.0</span></div>
+    <header class="site-nav">
+      <a class="wordmark" href="#top" aria-label="DecisionOps for Jev home">
+        <span class="wordmark-symbol" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span>decision<span class="wordmark-light">ops</span></span>
+        <span class="wordmark-tag">FOR JEV</span>
+      </a>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="#jev">What is Jev?</a>
+        <a href="#primitives">The primitives</a>
+        <a href="#workbench">Decision lab</a>
+      </nav>
+      <a class="nav-cta" href="https://github.com/mionax/decisionops" target="_blank" rel="noreferrer">Star the project <span>↗</span></a>
+    </header>
+
+    <main>
+      <section class="hero" id="top">
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <div class="eyebrow hero-eyebrow"><span class="status-dot"></span>THE JEV DECISION WORKBENCH <span class="eyebrow-divider">/</span> OPEN SOURCE</div>
+            <h1>Jev thinks.<br /><em>Your code acts.</em></h1>
+            <p class="hero-deck">The new model doesn’t write another paragraph. It returns a decision your software can use. DecisionOps is where you test that decision <i>before</i> it becomes a branch in production.</p>
+            <div class="hero-actions">
+              <a class="button button-lime" href="#workbench">Enter the decision lab <span>↓</span></a>
+              <a class="text-link light-link" href="#jev">What makes Jev different? <span>↘</span></a>
+            </div>
+            <div class="hero-note"><span>INDEPENDENT PROJECT</span> Not made by or affiliated with TypeSafe AI.</div>
+          </div>
+
+          <div class="hero-art" aria-label="Illustrative Jev-style support decision">
+            <div class="art-index"><span>ONE STATE</span><i></i><span>THREE TYPED SIGNALS</span></div>
+            <div class="trace-card">
+              <div class="trace-top"><span><i class="trace-led"></i> DECISION TRACE</span><span>SYNTHETIC EXAMPLE · 001</span></div>
+              <div class="trace-state">
+                <div class="trace-label"><span>STATE</span><span>SUPPORT / #8472</span></div>
+                <p>“I’ve been charged twice for the same order. Can you reverse one?”</p>
+              </div>
+              <div class="trace-stem"><span></span><b>ASK THREE SMALL QUESTIONS</b><span></span></div>
+              <div class="trace-answer choice-answer">
+                <div class="answer-head"><span class="type-label">CHOICE</span><span>INTENT ROUTING</span></div>
+                <div class="answer-main"><strong>billing</strong><span>0.94 <small>confidence</small></span></div>
+                <div class="answer-bars"><i style="--bar:94%"></i><i style="--bar:04%"></i><i style="--bar:02%"></i></div>
+                <div class="answer-options"><span>billing</span><span>shipping</span><span>technical</span></div>
+              </div>
+              <div class="trace-secondary">
+                <div class="mini-answer"><span class="type-label type-score">SCORE</span><strong>Urgency <b>1.7 / 2</b></strong><span class="mini-meter"><i></i></span></div>
+                <div class="mini-answer"><span class="type-label type-noul">NOUL</span><strong>Refund requested? <b>YES · 0.98</b></strong></div>
+              </div>
+              <div class="trace-code"><span>YOUR POLICY</span><code>if confidence &gt; 0.90 → route to billing</code><i>↳</i></div>
+            </div>
+            <div class="orbit orbit-one"></div>
+            <div class="orbit orbit-two"></div>
+            <div class="art-footnote"><span>STATE → JUDGMENT → CODE</span><span>01 / 03</span></div>
+          </div>
         </div>
-      </aside>
+        <div class="hero-bottom"><span>NOT ANOTHER CHAT INTERFACE</span><span class="ticker-line"></span><span>AN INTELLIGENCE LAYER FOR SOFTWARE</span><span class="ticker-star">✳</span><span>CHOICE · SCORE · NOUL</span></div>
+      </section>
 
-      <main class="main-content">
-        <header class="topbar">
-          <div class="breadcrumbs"><span>Workspace</span><b>/</b><strong>Decision lab</strong></div>
-          <div class="top-actions">
-            <span class="privacy-pill"><span></span>LOCAL ONLY</span>
-            <button class="button button-dark button-small" id="export-button" type="button"><span>↓</span> Export report</button>
+      <section class="jev-section section-pad" id="jev">
+        <div class="section-kicker"><span>01</span><i></i><span>WHAT IS JEV AI?</span></div>
+        <div class="jev-grid">
+          <div class="jev-headline">
+            <h2>A model that<br />answers <em>your code.</em></h2>
+            <p>Jev is TypeSafe AI’s first public <strong>System One</strong> model: built for fast, bounded judgments inside software—not open-ended conversation.</p>
+            <a class="text-link" href="https://docs.typesafe.ai/introduction" target="_blank" rel="noreferrer">Read TypeSafe’s official introduction <span>↗</span></a>
           </div>
-        </header>
-
-        <section class="page-intro">
-          <div>
-            <div class="eyebrow"><span class="eyebrow-line"></span>DECISION QUALITY / 001</div>
-            <h1>Know when to <em>trust</em><br class="title-break" />the decision.</h1>
-            <p class="intro-copy">Replay model judgments against known outcomes. Tune the confidence gate. See the cost of saying “yes”.</p>
+          <div class="jev-explainer">
+            <p class="dropcap">Give it a state—a ticket, an agent trace, an invoice—and ask a typed question. Instead of a free-form answer to parse, Jev returns a value shaped for the question: a choice, a score on your rubric, or the probability that a statement is true.</p>
+            <p>That doesn’t make every decision correct, or make Jev a replacement for a general-purpose LLM. It changes the interface: from “generate something a person can read” to “return a signal my program can branch on.”</p>
+            <div class="fact-note"><span class="fact-mark">i</span><span><strong>The important distinction:</strong> Jev is TypeSafe’s hosted model. DecisionOps is an independent, open-source evaluation workbench—not the model, its weights, or an official TypeSafe product.</span></div>
           </div>
-          <div class="dataset-control">
-            <div class="dataset-meta"><span class="dataset-icon">▤</span><div><small>ACTIVE DATASET</small><strong id="dataset-name">Support triage · sample</strong></div><span class="demo-tag">SYNTHETIC</span></div>
-            <div class="dataset-actions"><span id="dataset-subtitle">Choice + Noul · 34 records</span><button id="upload-button" class="text-button" type="button">Load JSONL <span>↗</span></button><input type="file" id="file-input" accept=".jsonl,.ndjson,text/plain" hidden /></div>
+        </div>
+        <div class="paradigm-strip">
+          <div class="paradigm-label">TWO TOOLS.<br />DIFFERENT JOBS.</div>
+          <div class="paradigm-item"><span class="paradigm-index">A / GENERATIVE MODEL</span><strong>Write the answer.</strong><p>Explain, draft, brainstorm, reason in language.</p><span class="paradigm-output">WORDS FOR PEOPLE</span></div>
+          <div class="paradigm-divider"><span>≠</span></div>
+          <div class="paradigm-item paradigm-jev"><span class="paradigm-index">B / SYSTEM ONE · JEV</span><strong>Choose the branch.</strong><p>Classify, rate, verify, route, and surface uncertainty.</p><span class="paradigm-output">SIGNALS FOR SOFTWARE</span></div>
+          <div class="paradigm-stamp">USE BOTH<br />WHERE THEY FIT</div>
+        </div>
+      </section>
+
+      <section class="primitive-section section-pad" id="primitives">
+        <div class="section-heading-row">
+          <div><div class="section-kicker kicker-dark"><span>02</span><i></i><span>THE QUESTION SHAPES</span></div><h2>Three primitives.<br /><em>Infinite branches.</em></h2></div>
+          <p>Jev’s typed questions are small building blocks. Ask one judgment at a time; compose the result in code.</p>
+        </div>
+        <div class="primitive-grid">
+          <article class="primitive-card primitive-choice"><div class="primitive-card-top"><span class="primitive-number">01</span><span class="primitive-glyph">↗</span></div><div class="type-label">CHOICE</div><h3>Pick a path.</h3><p>Choose from options you define. Get the selected option and a probability distribution across the set.</p><div class="primitive-example"><span>WHICH QUEUE?</span><strong>billing <b>0.91</b></strong><i style="--width:91%"></i><span>shipping <b>0.06</b></span><i style="--width:6%"></i><span>technical <b>0.03</b></span><i style="--width:3%"></i></div><div class="primitive-foot">ROUTE · CLASSIFY · SELECT</div></article>
+          <article class="primitive-card primitive-score"><div class="primitive-card-top"><span class="primitive-number">02</span><span class="primitive-glyph">⌁</span></div><div class="type-label type-score">SCORE</div><h3>Place it on a scale.</h3><p>Rate a state against ordered, descriptive levels. The score can land between levels; probabilities show the spread.</p><div class="score-example"><div class="score-number">1.7<span>/ 2</span></div><div class="score-ruler"><i></i><i></i><i class="active"></i><b></b></div><div class="score-labels"><span>LOW</span><span>MEDIUM</span><span>HIGH</span></div></div><div class="primitive-foot">RANK · PRIORITIZE · TRIAGE</div></article>
+          <article class="primitive-card primitive-noul"><div class="primitive-card-top"><span class="primitive-number">03</span><span class="primitive-glyph">?</span></div><div class="type-label type-noul">NOUL</div><h3>Is it true?</h3><p>Ask a yes/no question. Noul returns the probability of “yes”—not a separate confidence field.</p><div class="noul-example"><span>REFUND REQUESTED?</span><div class="noul-answer"><strong>YES</strong><div class="noul-probability"><i></i></div><b>0.98</b></div><div class="noul-scale"><span>NO · 0.02</span><span>YES · 0.98</span></div></div><div class="primitive-foot">VERIFY · FLAG · GATE</div></article>
+        </div>
+        <div class="primitive-citation">Question types and output descriptions follow <a href="https://docs.typesafe.ai/primitives" target="_blank" rel="noreferrer">TypeSafe’s public primitives documentation ↗</a></div>
+      </section>
+
+      <section class="usecase-section section-pad">
+        <div class="section-kicker"><span>03</span><i></i><span>WHEN A JUDGMENT BECOMES A BRANCH</span></div>
+        <div class="usecase-intro"><h2>Every “if” has<br />a cost.</h2><p>Hard-coded rules are brittle. A chat model may be more machinery than a narrow judgment needs. Jev points at a new middle ground: machine-readable judgment, composed with the rules you own.</p></div>
+        <div class="usecase-grid">
+          <article class="usecase-card"><span>01 / CUSTOMER OPS</span><h3>Route the request.<br /><em>Escalate the edge.</em></h3><p>Classify intent, score urgency, and send low-confidence cases to a human—not to a guessed queue.</p><span class="usecase-arrow">↗</span></article>
+          <article class="usecase-card"><span>02 / AGENT SYSTEMS</span><h3>Review the run.<br /><em>Not every run.</em></h3><p>Score a completed agent trace for policy risk or silent failure, then apply your own review threshold.</p><span class="usecase-arrow">↗</span></article>
+          <article class="usecase-card"><span>03 / DATA PIPELINES</span><h3>Read the stream.<br /><em>At machine scale.</em></h3><p>Turn unstructured records into typed signals you can filter, rank, aggregate, and route downstream.</p><span class="usecase-arrow">↗</span></article>
+          <article class="usecase-card"><span>04 / PRODUCT UX</span><h3>Make it feel instant.<br /><em>Keep a human fallback.</em></h3><p>Use a narrow decision in a latency-sensitive path, with a threshold that matches the consequence.</p><span class="usecase-arrow">↗</span></article>
+        </div>
+        <p class="usecase-caveat">For high-stakes, ambiguous, or irreversible actions, typed output is not a substitute for domain rules, validation, or human review.</p>
+      </section>
+
+      <section class="lab-intro">
+        <div class="lab-orbit" aria-hidden="true"><span>0</span><i></i><b>1</b></div>
+        <div class="lab-copy"><div class="section-kicker kicker-dark"><span>04</span><i></i><span>THE PART THAT STILL NEEDS PROOF</span></div><h2>Confidence is a claim.<br /><em>Measure it.</em></h2><p>Jev can return a confidence score. DecisionOps helps you ask the harder question: when it says “I’m sure,” is it right on <i>your</i> examples?</p><div class="lab-proof-points"><span><b>01</b> Calibration &amp; Brier score</span><span><b>02</b> Coverage vs. selective risk</span><span><b>03</b> Every case, inspectable</span></div><a class="button button-dark" href="#workbench">Try the local workbench <span>↓</span></a><span class="lab-smallprint">NO API KEY · NO UPLOAD · SYNTHETIC SAMPLE INCLUDED</span></div>
+      </section>
+
+      <section class="workbench-section" id="workbench">
+        <div class="workbench-shell">
+          <div class="workbench-topbar"><div class="breadcrumbs"><span>DECISIONOPS</span><b>/</b><strong>JEV DECISION LAB</strong></div><div class="top-actions"><span class="privacy-pill"><i></i>LOCAL ONLY</span><button class="button button-dark button-small" id="export-button" type="button"><span>↓</span> Export report</button></div></div>
+          <div class="workbench-intro">
+            <div><div class="eyebrow-small">05 / PUT THE OUTPUT UNDER A MICROSCOPE</div><h2>Measure before<br /><em>you automate.</em></h2><p>Move the confidence gate. See how much you automate—and what slips through.</p></div>
+            <div class="dataset-control"><div class="dataset-meta"><span class="dataset-icon">▤</span><div><small>ACTIVE DATASET</small><strong id="dataset-name">Jev support triage · sample</strong></div><span class="demo-tag">SYNTHETIC</span></div><div class="dataset-actions"><span id="dataset-subtitle">Choice + Score + Noul · 38 records</span><button id="upload-button" class="text-button" type="button">Load JSONL <span>↗</span></button><input type="file" id="file-input" accept=".jsonl,.ndjson,text/plain" hidden /></div></div>
           </div>
-        </section>
 
-        <section class="metric-grid" aria-label="Evaluation metrics">
-          <article class="metric-card metric-primary"><div class="metric-label">TOP-LINE ACCURACY <span class="info-dot" title="Share of all predictions matching the expected label">i</span></div><div class="metric-value" id="accuracy">—</div><div class="metric-foot"><span class="metric-swatch green"></span>All records · no confidence gate</div><div class="metric-ornament">↗</div></article>
-          <article class="metric-card"><div class="metric-label">BRIER SCORE <span class="info-dot" title="Mean squared error of predicted probabilities. Lower is better.">i</span></div><div class="metric-value" id="brier">—</div><div class="metric-foot">Probability quality · lower is better</div><div class="sparkline" id="brier-spark"></div></article>
-          <article class="metric-card"><div class="metric-label">CALIBRATION ERROR <span class="info-dot" title="Expected calibration error across ten confidence bins. Lower is better.">i</span></div><div class="metric-value" id="ece">—</div><div class="metric-foot">10 confidence bins · lower is better</div><div class="calibration-mark"><span></span><span></span><span></span><span></span><span></span></div></article>
-          <article class="metric-card"><div class="metric-label">DECISIONS REVIEWED <span class="info-dot" title="Share of records accepted at the selected threshold.">i</span></div><div class="metric-value" id="coverage">—</div><div class="metric-foot"><span id="accepted-count">—</span> pass the current confidence gate</div><div class="ring-wrap"><svg viewBox="0 0 44 44" aria-hidden="true"><circle class="ring-track" cx="22" cy="22" r="17"></circle><circle class="ring-fill" id="coverage-ring" cx="22" cy="22" r="17"></circle></svg></div></article>
-        </section>
+          <section class="metric-grid" aria-label="Evaluation metrics">
+            <article class="metric-card metric-primary"><div class="metric-label">ROUNDED-LEVEL ACCURACY <span class="info-dot" title="Score decisions are rounded to the nearest rubric level; Choice and Noul are compared to their expected labels.">i</span></div><div class="metric-value" id="accuracy">—</div><div class="metric-foot"><span class="metric-swatch green"></span>On labeled examples · not a guarantee</div><div class="metric-ornament">↗</div></article>
+            <article class="metric-card score-metric-card" id="score-mae-card" hidden><div class="metric-label">SCORE MAE <span class="info-dot" title="Mean absolute difference between the predicted score and expected rubric level. Lower is better.">i</span></div><div class="metric-value" id="score-mae">—</div><div class="metric-foot">Average rubric-level error</div></article>
+            <article class="metric-card"><div class="metric-label">BRIER SCORE <span class="info-dot" title="Mean squared error of predicted probabilities. Lower is better.">i</span></div><div class="metric-value" id="brier">—</div><div class="metric-foot">Probability quality · lower is better</div><div class="sparkline" id="brier-spark"></div></article>
+            <article class="metric-card"><div class="metric-label">CALIBRATION ERROR <span class="info-dot" title="Expected calibration error across ten confidence bins. Descriptive, not a guarantee.">i</span></div><div class="metric-value" id="ece">—</div><div class="metric-foot">10 confidence bins · lower is better</div><div class="calibration-mark"><span></span><span></span><span></span><span></span><span></span></div></article>
+            <article class="metric-card"><div class="metric-label">DECISIONS ACCEPTED <span class="info-dot" title="Share of decisions above the selected confidence threshold.">i</span></div><div class="metric-value" id="coverage">—</div><div class="metric-foot"><span id="accepted-count">—</span> pass the current gate</div><div class="ring-wrap"><svg viewBox="0 0 44 44" aria-hidden="true"><circle class="ring-track" cx="22" cy="22" r="17"></circle><circle class="ring-fill" id="coverage-ring" cx="22" cy="22" r="17"></circle></svg></div></article>
+          </section>
 
-        <section class="analysis-grid">
-          <article class="panel calibration-panel">
-            <div class="panel-heading"><div><div class="eyebrow-small">PROBABILITY RELIABILITY</div><h2>Calibration curve</h2></div><div class="chart-legend"><span><i class="legend-dot"></i>Your model</span><span><i class="legend-dash"></i>Perfectly calibrated</span></div></div>
-            <div class="chart-frame"><div class="y-axis-label">OBSERVED ACCURACY</div><div class="chart-area"><div class="y-ticks"><span>100%</span><span>75%</span><span>50%</span><span>25%</span><span>0%</span></div><svg id="calibration-chart" viewBox="0 0 500 220" preserveAspectRatio="none" role="img" aria-label="Model calibration curve"></svg><div class="x-ticks"><span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span></div></div></div>
-            <div class="chart-caption"><span>Predicted confidence</span><span id="calibration-note">Each dot is a confidence bucket · larger = more examples</span></div>
-          </article>
+          <section class="analysis-grid">
+            <article class="panel calibration-panel"><div class="panel-heading"><div><div class="eyebrow-small">PROBABILITY RELIABILITY</div><h3>Calibration curve</h3></div><div class="chart-legend"><span><i class="legend-dot"></i>Observed</span><span><i class="legend-dash"></i>Perfectly calibrated</span></div></div><div class="chart-frame"><div class="y-axis-label">OBSERVED ACCURACY</div><div class="chart-area"><div class="y-ticks"><span>100%</span><span>75%</span><span>50%</span><span>25%</span><span>0%</span></div><svg id="calibration-chart" viewBox="0 0 500 220" preserveAspectRatio="none" role="img" aria-label="Observed accuracy by confidence"></svg><div class="x-ticks"><span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span></div></div></div><div class="chart-caption"><span>Reported confidence / derived certainty</span><span id="calibration-note">Each dot is a confidence bucket · larger = more examples</span></div></article>
+            <article class="panel gate-panel"><div class="panel-heading"><div><div class="eyebrow-small">SELECTIVE PREDICTION</div><h3>Set the confidence gate</h3></div><span class="gate-badge">LIVE SIMULATION</span></div><p class="gate-copy">Accept high-confidence decisions. Route the rest to review. Watch coverage and observed error risk move together.</p><div class="threshold-row"><span>REVIEW BELOW</span><strong id="threshold-value">70%</strong></div><input id="threshold-slider" class="threshold-slider" type="range" min="50" max="95" step="1" value="70" aria-label="Confidence threshold" /><div class="slider-labels"><span>50% · more coverage</span><span>95% · more selective</span></div><div class="gate-results"><div class="gate-result"><span>Coverage</span><strong id="gate-coverage">—</strong><small id="gate-accepted">— decisions accepted</small></div><div class="gate-divider"></div><div class="gate-result"><span>Selective risk</span><strong id="gate-risk">—</strong><small>Errors among accepted</small></div></div><div class="gate-callout"><span class="callout-icon">↗</span><span id="gate-insight">Adjust the threshold to explore your risk / coverage trade-off.</span></div></article>
+          </section>
 
-          <article class="panel gate-panel">
-            <div class="panel-heading"><div><div class="eyebrow-small">SELECTIVE PREDICTION</div><h2>Set the confidence gate</h2></div><span class="gate-badge">LIVE SIMULATION</span></div>
-            <p class="gate-copy">Only accept decisions at or above this confidence. Watch coverage and error risk move together.</p>
-            <div class="threshold-row"><span>REVIEW BELOW</span><strong id="threshold-value">70%</strong></div>
-            <input id="threshold-slider" class="threshold-slider" type="range" min="50" max="95" step="1" value="70" aria-label="Confidence threshold" />
-            <div class="slider-labels"><span>50% · more coverage</span><span>95% · more selective</span></div>
-            <div class="gate-results"><div class="gate-result"><span>Coverage</span><strong id="gate-coverage">—</strong><small id="gate-accepted">— decisions accepted</small></div><div class="gate-divider"></div><div class="gate-result"><span>Selective risk</span><strong id="gate-risk">—</strong><small>Errors among accepted</small></div></div>
-            <div class="gate-callout"><span class="callout-icon">↗</span><span id="gate-insight">Adjust the threshold to explore your risk / coverage trade-off.</span></div>
-          </article>
-        </section>
+          <section class="panel records-panel" id="records-panel"><div class="records-heading"><div><div class="eyebrow-small">CASE-BY-CASE REVIEW</div><h3>Decision ledger <span class="record-total" id="record-total">38</span></h3></div><div class="table-tools"><div class="filter-tabs" role="tablist" aria-label="Filter records"><button class="filter-tab active" data-filter="all" type="button">All <span id="all-count">—</span></button><button class="filter-tab" data-filter="errors" type="button">Errors <span id="error-count">—</span></button><button class="filter-tab" data-filter="review" type="button">Needs review <span id="review-count">—</span></button></div><button id="search-toggle" class="icon-button" type="button" title="Search records">⌕</button><input id="search-input" class="search-input" type="search" placeholder="Find a record…" hidden /></div></div><div class="table-scroll"><table><thead><tr><th>RECORD</th><th>TYPE</th><th>EXPECTED</th><th>DECIDED</th><th>CONFIDENCE / CERTAINTY</th><th>RESULT</th><th></th></tr></thead><tbody id="records-body"></tbody></table></div><div class="table-footer"><span id="table-status">Showing all records</span><span class="table-hint">Select a row to inspect its probability distribution <span>↓</span></span></div></section>
+          <div class="workbench-disclaimer">DecisionOps is an independent project. Noul certainty is derived from its yes probability; Jev does not return a separate Noul confidence value. Metrics on this synthetic sample are illustrative only.</div>
+        </div>
+      </section>
+    </main>
 
-        <section class="panel records-panel" id="records-panel">
-          <div class="records-heading"><div><div class="eyebrow-small">CASE-BY-CASE REVIEW</div><h2>Decision ledger <span class="record-total" id="record-total">34</span></h2></div><div class="table-tools"><div class="filter-tabs" role="tablist" aria-label="Filter records"><button class="filter-tab active" data-filter="all" type="button">All <span id="all-count">—</span></button><button class="filter-tab" data-filter="errors" type="button">Errors <span id="error-count">—</span></button><button class="filter-tab" data-filter="review" type="button">Needs review <span id="review-count">—</span></button></div><button id="search-toggle" class="icon-button" type="button" title="Search records">⌕</button><input id="search-input" class="search-input" type="search" placeholder="Find a record…" hidden /></div></div>
-          <div class="table-scroll"><table><thead><tr><th>RECORD</th><th>TYPE</th><th>EXPECTED</th><th>DECIDED</th><th>CONFIDENCE</th><th>RESULT</th><th></th></tr></thead><tbody id="records-body"></tbody></table></div>
-          <div class="table-footer"><span id="table-status">Showing all records</span><span class="table-hint">Select a row to inspect its probability distribution <span>↓</span></span></div>
-        </section>
-        <footer class="page-footer"><span>DECISIONOPS <i>·</i> MEASURE FIRST, AUTOMATE SECOND</span><span>Built for decisions that matter.</span></footer>
-      </main>
-    </div>
+    <footer class="site-footer"><a class="wordmark footer-wordmark" href="#top"><span class="wordmark-symbol" aria-hidden="true"><i></i><i></i><i></i></span><span>decision<span class="wordmark-light">ops</span></span></a><span>THE OPEN LAB FOR TYPED AI DECISIONS</span><div><a href="https://github.com/mionax/decisionops" target="_blank" rel="noreferrer">GitHub ↗</a><a href="https://docs.typesafe.ai/introduction" target="_blank" rel="noreferrer">Jev docs ↗</a></div><small>Jev and TypeSafe AI are trademarks of their respective owners. Not affiliated with TypeSafe AI.</small></footer>
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
     <script type="module" src="/web/app.js"></script>
   </body>
