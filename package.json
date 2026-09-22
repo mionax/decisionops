@@ -1,0 +1,44 @@
+{
+  "name": "decisionops",
+  "version": "0.1.0",
+  "description": "Measure, replay, and calibrate typed decisions for AI systems.",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mionax/decisionops.git"
+  },
+  "homepage": "https://github.com/mionax/decisionops#readme",
+  "bugs": {
+    "url": "https://github.com/mionax/decisionops/issues"
+  },
+  "bin": {
+    "decisionops": "./bin/decisionops.mjs"
+  },
+  "files": [
+    "bin/",
+    "examples/",
+    "scripts/",
+    "src/",
+    "web/",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "check": "node --check bin/decisionops.mjs && node --check src/metrics.mjs && node --check src/dataset.mjs && node --check web/app.js && node --check scripts/dev.mjs"
+  },
+  "license": "MIT",
+  "keywords": [
+    "ai",
+    "evaluation",
+    "calibration",
+    "decision-model",
+    "jev",
+    "llm",
+    "benchmark",
+    "confidence"
+  ]
+}

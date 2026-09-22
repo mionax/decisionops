@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f1eee6" />
+    <meta name="description" content="A local-first workbench to evaluate and calibrate AI decisions." />
+    <title>DecisionOps — Decision quality workbench</title>
+    <link rel="stylesheet" href="/web/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="#" aria-label="DecisionOps home">
+          <span class="brand-mark"><i></i><i></i><i></i></span>
+          <span>decision<span class="brand-light">ops</span></span>
+        </a>
+        <div class="workspace-label">WORKSPACE</div>
+        <button class="nav-item active" type="button"><span class="nav-icon grid-icon">▦</span>Decision lab</button>
+        <button class="nav-item" id="nav-datasets" type="button"><span class="nav-icon">◫</span>Datasets<span class="nav-count" id="record-count-side">—</span></button>
+        <button class="nav-item" id="nav-reports" type="button"><span class="nav-icon">◷</span>Export report</button>
+        <div class="sidebar-rule"></div>
+        <div class="workspace-label">LEARN</div>
+        <a class="nav-item nav-link" href="https://github.com/mionax/decisionops#readme" target="_blank" rel="noreferrer"><span class="nav-icon">↗</span>Quick start</a>
+        <a class="nav-item nav-link" href="https://github.com/mionax/decisionops/issues" target="_blank" rel="noreferrer"><span class="nav-icon">⌁</span>Feedback</a>
+        <div class="sidebar-bottom">
+          <div class="local-card"><span class="local-dot"></span><div><strong>Local session</strong><small>Your data stays here</small></div><span class="lock">⌑</span></div>
+          <a class="github-link" href="https://github.com/mionax/decisionops" target="_blank" rel="noreferrer"><span>GitHub</span><span>↗</span></a>
+          <div class="version">DECISIONOPS <span>v0.1.0</span></div>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div class="breadcrumbs"><span>Workspace</span><b>/</b><strong>Decision lab</strong></div>
+          <div class="top-actions">
+            <span class="privacy-pill"><span></span>LOCAL ONLY</span>
+            <button class="button button-dark button-small" id="export-button" type="button"><span>↓</span> Export report</button>
+          </div>
+        </header>
+
+        <section class="page-intro">
+          <div>
+            <div class="eyebrow"><span class="eyebrow-line"></span>DECISION QUALITY / 001</div>
+            <h1>Know when to <em>trust</em><br class="title-break" />the decision.</h1>
+            <p class="intro-copy">Replay model judgments against known outcomes. Tune the confidence gate. See the cost of saying “yes”.</p>
+          </div>
+          <div class="dataset-control">
+            <div class="dataset-meta"><span class="dataset-icon">▤</span><div><small>ACTIVE DATASET</small><strong id="dataset-name">Support triage · sample</strong></div><span class="demo-tag">SYNTHETIC</span></div>
+            <div class="dataset-actions"><span id="dataset-subtitle">Choice + Noul · 34 records</span><button id="upload-button" class="text-button" type="button">Load JSONL <span>↗</span></button><input type="file" id="file-input" accept=".jsonl,.ndjson,text/plain" hidden /></div>
+          </div>
+        </section>
+
+        <section class="metric-grid" aria-label="Evaluation metrics">
+          <article class="metric-card metric-primary"><div class="metric-label">TOP-LINE ACCURACY <span class="info-dot" title="Share of all predictions matching the expected label">i</span></div><div class="metric-value" id="accuracy">—</div><div class="metric-foot"><span class="metric-swatch green"></span>All records · no confidence gate</div><div class="metric-ornament">↗</div></article>
+          <article class="metric-card"><div class="metric-label">BRIER SCORE <span class="info-dot" title="Mean squared error of predicted probabilities. Lower is better.">i</span></div><div class="metric-value" id="brier">—</div><div class="metric-foot">Probability quality · lower is better</div><div class="sparkline" id="brier-spark"></div></article>
+          <article class="metric-card"><div class="metric-label">CALIBRATION ERROR <span class="info-dot" title="Expected calibration error across ten confidence bins. Lower is better.">i</span></div><div class="metric-value" id="ece">—</div><div class="metric-foot">10 confidence bins · lower is better</div><div class="calibration-mark"><span></span><span></span><span></span><span></span><span></span></div></article>
+          <article class="metric-card"><div class="metric-label">DECISIONS REVIEWED <span class="info-dot" title="Share of records accepted at the selected threshold.">i</span></div><div class="metric-value" id="coverage">—</div><div class="metric-foot"><span id="accepted-count">—</span> pass the current confidence gate</div><div class="ring-wrap"><svg viewBox="0 0 44 44" aria-hidden="true"><circle class="ring-track" cx="22" cy="22" r="17"></circle><circle class="ring-fill" id="coverage-ring" cx="22" cy="22" r="17"></circle></svg></div></article>
+        </section>
+
+        <section class="analysis-grid">
+          <article class="panel calibration-panel">
+            <div class="panel-heading"><div><div class="eyebrow-small">PROBABILITY RELIABILITY</div><h2>Calibration curve</h2></div><div class="chart-legend"><span><i class="legend-dot"></i>Your model</span><span><i class="legend-dash"></i>Perfectly calibrated</span></div></div>
+            <div class="chart-frame"><div class="y-axis-label">OBSERVED ACCURACY</div><div class="chart-area"><div class="y-ticks"><span>100%</span><span>75%</span><span>50%</span><span>25%</span><span>0%</span></div><svg id="calibration-chart" viewBox="0 0 500 220" preserveAspectRatio="none" role="img" aria-label="Model calibration curve"></svg><div class="x-ticks"><span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span></div></div></div>
+            <div class="chart-caption"><span>Predicted confidence</span><span id="calibration-note">Each dot is a confidence bucket · larger = more examples</span></div>
+          </article>
+
+          <article class="panel gate-panel">
+            <div class="panel-heading"><div><div class="eyebrow-small">SELECTIVE PREDICTION</div><h2>Set the confidence gate</h2></div><span class="gate-badge">LIVE SIMULATION</span></div>
+            <p class="gate-copy">Only accept decisions at or above this confidence. Watch coverage and error risk move together.</p>
+            <div class="threshold-row"><span>REVIEW BELOW</span><strong id="threshold-value">70%</strong></div>
+            <input id="threshold-slider" class="threshold-slider" type="range" min="50" max="95" step="1" value="70" aria-label="Confidence threshold" />
+            <div class="slider-labels"><span>50% · more coverage</span><span>95% · more selective</span></div>
+            <div class="gate-results"><div class="gate-result"><span>Coverage</span><strong id="gate-coverage">—</strong><small id="gate-accepted">— decisions accepted</small></div><div class="gate-divider"></div><div class="gate-result"><span>Selective risk</span><strong id="gate-risk">—</strong><small>Errors among accepted</small></div></div>
+            <div class="gate-callout"><span class="callout-icon">↗</span><span id="gate-insight">Adjust the threshold to explore your risk / coverage trade-off.</span></div>
+          </article>
+        </section>
+
+        <section class="panel records-panel" id="records-panel">
+          <div class="records-heading"><div><div class="eyebrow-small">CASE-BY-CASE REVIEW</div><h2>Decision ledger <span class="record-total" id="record-total">34</span></h2></div><div class="table-tools"><div class="filter-tabs" role="tablist" aria-label="Filter records"><button class="filter-tab active" data-filter="all" type="button">All <span id="all-count">—</span></button><button class="filter-tab" data-filter="errors" type="button">Errors <span id="error-count">—</span></button><button class="filter-tab" data-filter="review" type="button">Needs review <span id="review-count">—</span></button></div><button id="search-toggle" class="icon-button" type="button" title="Search records">⌕</button><input id="search-input" class="search-input" type="search" placeholder="Find a record…" hidden /></div></div>
+          <div class="table-scroll"><table><thead><tr><th>RECORD</th><th>TYPE</th><th>EXPECTED</th><th>DECIDED</th><th>CONFIDENCE</th><th>RESULT</th><th></th></tr></thead><tbody id="records-body"></tbody></table></div>
+          <div class="table-footer"><span id="table-status">Showing all records</span><span class="table-hint">Select a row to inspect its probability distribution <span>↓</span></span></div>
+        </section>
+        <footer class="page-footer"><span>DECISIONOPS <i>·</i> MEASURE FIRST, AUTOMATE SECOND</span><span>Built for decisions that matter.</span></footer>
+      </main>
+    </div>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script type="module" src="/web/app.js"></script>
+  </body>
+</html>
