@@ -8,6 +8,12 @@ DecisionOps is an independent, open-source workbench for evaluating Jev-compatib
 
 The goal is simple: **turn “the model says it’s sure” into “we measured what happens when it says it’s sure.”** Bring saved JSONL outputs from Jev or another structured decision system. No API key, model call, account, telemetry, or upload is needed.
 
+<p align="center">
+  <img src="docs/screenshots/homepage.png" alt="DecisionOps homepage introducing Jev and its three typed decision signals" width="49%" />
+  <img src="docs/screenshots/decision-lab.png" alt="DecisionOps local lab showing evaluation metrics, calibration, a confidence gate, and the decision ledger" width="49%" />
+</p>
+<p align="center"><sub>Homepage and interactive local decision lab. The included dataset and its metrics are synthetic examples.</sub></p>
+
 Learn from [TypeSafe’s official Jev introduction](https://docs.typesafe.ai/introduction), [question primitives](https://docs.typesafe.ai/primitives), and [confidence guide](https://docs.typesafe.ai/confidence).
 
 ## Try it
